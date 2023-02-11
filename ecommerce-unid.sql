@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 10-02-2023 a las 21:40:58
+-- Tiempo de generación: 11-02-2023 a las 00:18:44
 -- Versión del servidor: 10.5.16-MariaDB
 -- Versión de PHP: 7.3.32
 
@@ -174,7 +174,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `last_name`, `username`, `email`, `address`, `state`, `city`, `password`, `role`, `phone_number`, `birth_date`, `status`) VALUES
 (1, 'Augusto Misael', 'Zamudio Ponce', 'ironBael', 'forzabycats888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', 'Quintana Roo', 'Cancún', '1234567890', 2, 9983117006, '2001-12-16', 1),
-(2, 'Augusto Misael', 'Zamudio Ponce', 'ironBael2', 'forzabycats888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', 'Quintana Roo', 'Cancún', '1234567890', 1, 9983117006, '2001-12-16', 1),
+(2, 'Augusto Misael', 'Zamudio Ponce', 'ironBael2', 'forzabydark888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', 'Quintana Roo', 'Cancún', '1234567890', 1, 9983117006, '2001-12-16', 1),
 (3, 'David Israel', 'Villalobos Sanchez', 'DIVS', 'davidisraelvillalobos@gmail.com', '', 'Quintana Roo', 'Cancún', '1234554321', 2, 9983565388, '2002-01-01', 1);
 
 --
@@ -186,6 +186,7 @@ INSERT INTO `users` (`id`, `name`, `last_name`, `username`, `email`, `address`, 
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `id_seller` (`seller_id`);
 
 --
@@ -218,14 +219,16 @@ ALTER TABLE `products`
 ALTER TABLE `sellers`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `username` (`username`);
+  ADD KEY `username` (`username`),
+  ADD KEY `email` (`email`);
 
 --
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -302,7 +305,8 @@ ALTER TABLE `products`
 --
 ALTER TABLE `sellers`
   ADD CONSTRAINT `fk_sellers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `sellers_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `sellers_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sellers_ibfk_2` FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
