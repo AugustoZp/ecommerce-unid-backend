@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
+<<<<<<< Updated upstream
 -- Tiempo de generación: 15-02-2023 a las 01:47:24
+=======
+-- Tiempo de generación: 15-02-2023 a las 19:51:34
+>>>>>>> Stashed changes
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -113,6 +117,29 @@ INSERT INTO `products` (`id`, `category_id`, `product_name`, `price`, `stock`, `
 -- --------------------------------------------------------
 
 --
+<<<<<<< Updated upstream
+=======
+-- Estructura de tabla para la tabla `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`) VALUES
+(1, 'admin'),
+(2, 'user'),
+(3, 'client');
+
+-- --------------------------------------------------------
+
+--
+>>>>>>> Stashed changes
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -124,7 +151,11 @@ CREATE TABLE `users` (
   `email` varchar(55) NOT NULL,
   `address` varchar(300) NOT NULL,
   `password` varchar(10) NOT NULL,
+<<<<<<< Updated upstream
   `role` enum('user','admin') NOT NULL,
+=======
+  `role_id` int(1) NOT NULL DEFAULT 2,
+>>>>>>> Stashed changes
   `phone_number` bigint(10) NOT NULL DEFAULT 1,
   `birth_date` date NOT NULL DEFAULT '0001-01-01',
   `status` tinyint(1) NOT NULL DEFAULT 1
@@ -134,10 +165,17 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
+<<<<<<< Updated upstream
 INSERT INTO `users` (`id`, `name`, `last_name`, `username`, `email`, `address`, `password`, `role`, `phone_number`, `birth_date`, `status`) VALUES
 (1, 'Augusto Misael', 'Zamudio Ponce', 'ironBael', 'forzabycats888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', '1234567890', 'user', 9983117006, '2001-12-16', 1),
 (2, 'Augusto Misael', 'Zamudio Ponce', 'ironBael2', 'forzabydark888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', '1234567890', 'admin', 9983117006, '2001-12-16', 1),
 (3, 'David Israel', 'Villalobos Sanchez', 'DIVS', 'davidisraelvillalobos@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', '1234554321', 'admin', 9983565388, '2002-01-01', 1);
+=======
+INSERT INTO `users` (`id`, `name`, `last_name`, `username`, `email`, `address`, `password`, `role_id`, `phone_number`, `birth_date`, `status`) VALUES
+(1, 'Augusto Misael', 'Zamudio Ponce', 'ironBael', 'forzabycats888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', '1234567890', 1, 9983117006, '2001-12-16', 1),
+(2, 'Augusto Misael', 'Zamudio Ponce', 'ironBael2', 'forzabydark888@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', '1234567890', 2, 9983117006, '2001-12-16', 1),
+(3, 'David Israel', 'Villalobos Sanchez', 'DIVS', 'davidisraelvillalobos@gmail.com', 'Región 221, Manzana 63, Lote 25, Calle 78, CP 77517', '1234554321', 3, 9983565388, '2002-01-01', 1);
+>>>>>>> Stashed changes
 
 --
 -- Índices para tablas volcadas
@@ -174,13 +212,26 @@ ALTER TABLE `products`
   ADD KEY `category_id` (`category_id`);
 
 --
+<<<<<<< Updated upstream
+=======
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+>>>>>>> Stashed changes
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`),
+<<<<<<< Updated upstream
   ADD KEY `role` (`role`);
+=======
+  ADD KEY `role` (`role_id`);
+>>>>>>> Stashed changes
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -211,6 +262,15 @@ ALTER TABLE `products`
   MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+<<<<<<< Updated upstream
+=======
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+>>>>>>> Stashed changes
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
@@ -238,6 +298,15 @@ ALTER TABLE `order_detail`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+<<<<<<< Updated upstream
+=======
+
+--
+-- Filtros para la tabla `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+>>>>>>> Stashed changes
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
