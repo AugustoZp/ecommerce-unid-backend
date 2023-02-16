@@ -2,7 +2,7 @@
 require 'vendor/autoload.php';
 
 //Conexion de la base de datos//
-Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=id20281525_ecommerce_unid','id20281525_eladmin','back/Back/03'));
+Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=ecommerce_unid','root',''));
 
 
 //get all users from database//
@@ -21,10 +21,8 @@ Flight::route('GET /users', function(){
             'username' => $row['username'],
             'email' => $row['email'],
             'address' => $row['address'],
-            'state' => $row['state'],
-            'city' => $row['city'],
             'password' => $row['password'],
-            'role' => $row['role'],
+            'role_id' => $row['role_id'],
             'phone_number' => $row['phone_number'],
             'birth_date' => $row['birth_date'],
             'status' => $row['status']
@@ -36,10 +34,10 @@ Flight::route('GET /users', function(){
     ]);
 });
 
-//get all sellers from database//
-Flight::route('GET /sellers', function(){
+//get all roles from database//
+Flight::route('GET /roles', function(){
     $db = Flight::db();
-    $query = $db->prepare("SELECT * FROM sellers");
+    $query = $db->prepare("SELECT * FROM roles");
     $query->execute();
     $data = $query->FetchAll();
     // print_r($data);
@@ -47,14 +45,7 @@ Flight::route('GET /sellers', function(){
     foreach ($data as $row){
         $array[] = [
             'id' => $row['id'],
-            'user_id' => $row['user_id'],
             'name' => $row['name'],
-            'last_name' => $row['last_name'],
-            'username' => $row['username'],
-            'email' => $row['email'],
-            'phone_number' => $row['phone_number'],
-            'role' => $row['role'],
-            'status' => $row['status']
         ];
     }
     Flight::json([
@@ -74,7 +65,6 @@ Flight::route('GET /categories', function(){
     foreach ($data as $row){
         $array[] = [
             'id' => $row['id'],
-            'seller_id' => $row['seller_id'],
             'name' => $row['name'],
             'image' => $row['image']    
         ];
@@ -96,15 +86,13 @@ Flight::route('GET /products', function(){
     foreach ($data as $row){
         $array[] = [
             'id' => $row['id'],
-            'seller_id' => $row['seller_id'],
             'category_id' => $row['category_id'],
             'product_name' => $row['product_name'],
             'price' => $row['price'],   
-            'quantity' => $row['quantity'],
+            'stock' => $row['stock'],
             'short_desc' => $row['short_desc'],
             'description' => $row['description'],
             'image' => $row['image'], 
-            'available' => $row['available'], 
         ];
     }
     Flight::json([
@@ -125,8 +113,6 @@ Flight::route('GET /orders', function(){
         $array[] = [
             'id' => $row['id'],
             'user_id' => $row['user_id'],
-            'user_email' => $row['user_email'],
-            'order_address' => $row['order_address'],
             'total_amount' => $row['total_amount'],    
             'order_status' => $row['order_status'],    
         ];
@@ -150,13 +136,9 @@ Flight::route('GET /order_detail', function(){
             'id' => $row['id'],
             'order_id' => $row['order_id'],
             'product_id' => $row['product_id'],
-            'product_name' => $row['product_name'],
-            'order_adress' => $row['order_address'],
-            'state' => $row['state'],
-            'city' => $row['city'],  
             'image' => $row['image'],   
             'quantity' => $row['quantity'], 
-            'total_amount' => $row['total_amount'],  
+            'price' => $row['price'],  
         ];
     }
     Flight::json([
@@ -181,10 +163,8 @@ Flight::route('GET /users/@id', function($id){
             'username' => $data['username'],
             'email' => $data['email'],
             'address' => $data['address'],
-            'state' => $data['state'],
-            'city' => $data['city'],
             'password' => $data['password'],
-            'role' => $data['role'],
+            'role_id' => $data['role_id'],
             'phone_number' => $data['phone_number'],
             'birth_date' => $data['birth_date'],
             'status' => $data['status']
@@ -193,25 +173,18 @@ Flight::route('GET /users/@id', function($id){
     Flight::json($array);
 });
 
-//get a single seller from database//
-Flight::route('GET /sellers/@id', function($id){
+//get a single role from database//
+Flight::route('GET /roles/@id', function($id){
     $db = Flight::db();
-    $query = $db->prepare("SELECT * FROM sellers WHERE id = :id");
+    $query = $db->prepare("SELECT * FROM roles WHERE id = :id");
     $query->execute([":id" => $id]);
     $data = $query->Fetch();
-    
-        $array[] = [
+
+        $array = [
             'id' => $data['id'],
-            'user_id' => $data['user_id'],
             'name' => $data['name'],
-            'last_name' => $data['last_name'],
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'phone_number' => $data['phone_number'],
-            'role' => $data['role'],
-            'status' => $data['status']
         ];
-    
+
     Flight::json($array);
 });
 
@@ -224,7 +197,6 @@ Flight::route('GET /categories/@id', function($id){
 
         $array[] = [
             'id' => $data['id'],
-            'seller_id' => $data['seller_id'],
             'name' => $data['name'],
             'image' => $data['image']    
         ];
@@ -232,7 +204,7 @@ Flight::route('GET /categories/@id', function($id){
     Flight::json($array);
 });
 
-//get a single product from database//
+//get a single product from database//ss
 Flight::route('GET /products/@id', function($id){
     $db = Flight::db();
     $query = $db->prepare("SELECT * FROM products WHERE id = :id");
@@ -241,15 +213,13 @@ Flight::route('GET /products/@id', function($id){
 
         $array[] = [
             'id' => $data['id'],
-            'seller_id' => $data['seller_id'],
             'category_id' => $data['category_id'],
             'product_name' => $data['product_name'],
             'price' => $data['price'],   
-            'quantity' => $data['quantity'],
+            'stock' => $data['stock'],
             'short_desc' => $data['short_desc'],
             'description' => $data['description'],
             'image' => $data['image'], 
-            'available' => $data['available'], 
         ];
 
     Flight::json($array);
@@ -265,8 +235,6 @@ Flight::route('GET /orders/@id', function($id){
         $array[] = [
             'id' => $data['id'],
             'user_id' => $data['user_id'],
-            'user_email' => $data['user_email'],
-            'order_address' => $data['order_address'],
             'total_amount' => $data['total_amount'],    
             'order_status' => $data['order_status'],  
         ];
@@ -285,22 +253,15 @@ Flight::route('GET /order_detail/@id', function($id){
             'id' => $data['id'],
             'order_id' => $data['order_id'],
             'product_id' => $data['product_id'],
-            'product_name' => $data['product_name'],
-            'order_adress' => $data['order_address'],
-            'state' => $data['state'],
-            'city' => $data['city'],  
             'image' => $data['image'],   
             'quantity' => $data['quantity'], 
-            'total_amount' => $data['total_amount'],  
+            'price' => $data['price'],  
         ];
     
     Flight::json($array);
 });
 
 ////////////////////////////////
-
-
-
 
 Flight::start();
 ?>
