@@ -46,7 +46,7 @@ class roles{
 }              
 
 
-//////////Esta comnetodo porque no es necesario insertar nuevos roles, por el momento//////////
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
     //Función insertar roles//
 //     function roles_post(){
 //     $db = Flight::db();
@@ -70,7 +70,7 @@ class roles{
 //     }
 //     Flight::json($array);
 // }
-//////////Esta comnetodo porque no es necesario insertar nuevos roles, por el momento//////////
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 
 }  
 
