@@ -44,10 +44,10 @@ Flight::route('GET /roles', [$roles, 'selectall_roles']);
 //get a single rol from database//
 Flight::route('GET /roles/@id', [$roles, 'selectone_rol']);
 
-//////////Esta comnetodo porque no es necesario insertar nuevos roles, por el momento//////////
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 //POST roles//
 // Flight::route('POST /roles', [$roles, 'roles_post']);
-//////////Esta comnetodo porque no es necesario insertar nuevos roles, por el momento//////////
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 
 
 //get all orders from database//
