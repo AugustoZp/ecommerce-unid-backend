@@ -11,6 +11,20 @@ class ComposerStaticInitb7c6f2e92eb2a834fca455293f9ff973
         '5b7d984aab5ae919d3362ad9588977eb' => __DIR__ . '/..' . '/mikecao/flight/flight/Flight.php',
     );
 
+    public static $prefixLengthsPsr4 = array (
+        'c' => 
+        array (
+            'clases\\' => 7,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'clases\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/clases',
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -18,6 +32,8 @@ class ComposerStaticInitb7c6f2e92eb2a834fca455293f9ff973
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb7c6f2e92eb2a834fca455293f9ff973::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb7c6f2e92eb2a834fca455293f9ff973::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInitb7c6f2e92eb2a834fca455293f9ff973::$classMap;
 
         }, null, ClassLoader::class);

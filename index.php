@@ -1,19 +1,13 @@
 <?php
 require 'vendor/autoload.php';
-require 'clases/clases.users.php';
-require 'clases/clases.products.php';
-require 'clases/clases.orders.php';
-require 'clases/clases.order_detail.php';
-require 'clases/clases.categories.php';
-require 'clases/clases.roles.php';
 
-//Clases//
-$users = new users();
-$products = new products();
-$orders = new orders();
-$order_detail = new order_detail();
-$categories = new categories();
-$roles = new roles();
+//Estas son las clases, si no es necesario, NO lo edites//
+$users = new clases\users;
+$categories = new clases\categories;
+$products = new clases\products;
+$orders = new clases\orders;
+$order_detail = new clases\order_detail;
+$roles = new clases\roles;
 
 
 //get all users from database//
@@ -73,6 +67,7 @@ Flight::route('GET /roles/@id', [$roles, 'selectone_rol']);
 //DELETE roles//
 // Flight::route('DELETE /roles', [$roles, 'delete_roles']);
 //////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+
 
 //////////////////////////////
 

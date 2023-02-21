@@ -1,5 +1,10 @@
 {
     "require": {
         "mikecao/flight": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "clases\\" : "clases"
+        }
     }
 }
