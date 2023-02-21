@@ -56,7 +56,7 @@ class orders{
     $query = $db->prepare("INSERT INTO orders (user_id,total_amount) VALUES (:user_id,:total_amount)");
 
     $array = [
-    "error" => "Hubo un error al agregar los registros, por favor inteta mas tarde",
+    "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
     "status" => "error" 
     ];
 
@@ -73,6 +73,61 @@ class orders{
     }
     Flight::json($array);
 }
+
+
+    //Función put orders//
+    function orders_put(){
+        $db = flight::db();
+        $id = flight::request()->data->id;;
+        $user_id = Flight::request()->data->user_id;
+        $total_amount = Flight::request()->data->total_amount;
+    
+        
+        $query = $db->prepare("UPDATE orders SET user_id = :user_id, total_amount = :total_amount WHERE id = :id ");
+       
+       $array = [
+        "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+        "status" => "error" 
+        ];
+    
+       if ($query->execute([ ":user_id" => $user_id, ":total_amount" => $total_amount, ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id,
+                "user_id" => $user_id,
+                "total_amount" => $total_amount,
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+    
+//Función delete orders//
+function delete_orders(){
+    $db = flight::db();
+    $id = flight::request()->data->id;
+    
+    $query = $db->prepare("DELETE from orders WHERE id = :id");
+   
+    $array = [
+        "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+        "status" => "error" 
+        ];
+
+   if ($query->execute([ ":id" => $id])) {
+    $array = [
+        "data" => [
+            "id" => $id
+        ],
+        "status" => "success"
+    ];
+   }
+   flight::json($array);
+}
+    
 }  
+
+
 
 ?>

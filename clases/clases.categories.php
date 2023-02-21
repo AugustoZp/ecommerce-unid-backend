@@ -53,7 +53,7 @@ class categories{
     $query = $db->prepare("INSERT INTO categories (name) VALUES (:name)");
 
     $array = [
-    "error" => "Hubo un error al agregar los registros, por favor inteta mas tarde",
+    "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
     "status" => "error" 
     ];
 
@@ -68,6 +68,56 @@ class categories{
     }
     Flight::json($array);
 }
+
+
+    //Función put categories//
+    function categories_put(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        $name = flight::request()->data->name;
+        //$image = flight::request()->data->image;//
+        
+        $query = $db->prepare("UPDATE categories SET name = :name WHERE id = :id ");
+       
+       $array = [
+        "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+        "status" => "error" 
+        ];
+    
+       if ($query->execute([ ":name" => $name, ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id,
+                "name" => $name,
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+
+    //Función delete categories//
+    function delete_categories(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        
+        $query = $db->prepare("DELETE from categories WHERE id = :id");
+       
+        $array = [
+            "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+            "status" => "error" 
+            ];
+    
+       if ($query->execute([ ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
 }  
 
 ?>

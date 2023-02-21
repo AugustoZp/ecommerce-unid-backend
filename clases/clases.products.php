@@ -69,7 +69,7 @@ class products{
     $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description) VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description)");
 
     $array = [
-    "error" => "Hubo un error al agregar los registros, por favor inteta mas tarde",
+    "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
     "status" => "error" 
     ];
 
@@ -90,6 +90,69 @@ class products{
     }
     Flight::json($array);
 }
+
+    //Función put product//
+    function products_put(){
+    $db = flight::db();
+    $id = flight::request()->data->id;
+    $category_id = flight::request()->data->category_id;
+    $product_name = flight::request()->data->product_name;
+    $price = flight::request()->data->price;
+    $stock = flight::request()->data->stock;
+    $short_desc = flight::request()->data->short_desc;
+    $description = flight::request()->data->description;
+
+    
+    $query = $db->prepare("UPDATE products SET category_id = :category_id, product_name = :product_name, price = :price, stock = :stock, short_desc = :short_desc,
+    description = :description WHERE id = :id ");
+   
+   $array = [
+    "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+    "status" => "error" 
+    ];
+
+   if ($query->execute([ ":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc,
+   ":description" => $description, ":id" => $id])) {
+    $array = [
+        "data" => [
+            "id" => $id,
+            "category_id" => $category_id,
+            "product_name" => $product_name,
+            "price" => $price,
+            "stock" => $stock,
+            "short_desc" => $short_desc,
+            "description" => $description,
+        ],
+        "status" => "success"
+    ];
+   }
+   flight::json($array);
+}
+
+
+    //Función delete products//
+    function delete_products(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        
+        $query = $db->prepare("DELETE from products WHERE id = :id");
+       
+        $array = [
+            "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+            "status" => "error" 
+            ];
+    
+       if ($query->execute([ ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+
 }  
 
 ?>

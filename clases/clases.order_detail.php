@@ -63,7 +63,7 @@ class order_detail{
     $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, quantity, price) VALUES (:order_id,:product_id, :quantity, :price)");
 
     $array = [
-    "error" => "Hubo un error al agregar los registros, por favor inteta mas tarde",
+    "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
     "status" => "error" 
     ];
 
@@ -82,6 +82,63 @@ class order_detail{
     }
     Flight::json($array);
 }
+
+
+    //Función put order_detail//
+    function order_detail_put(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        $order_id = flight::request()->data->order_id;
+        $product_id = flight::request()->data->product_id;
+        $quantity = flight::request()->data->quantity;
+        $price = flight::request()->data->price;
+
+        
+        $query = $db->prepare("UPDATE order_detail SET order_id = :order_id, product_id = :product_id, quantity = :quantity, price = :price WHERE id = :id ");
+       
+       $array = [
+        "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+        "status" => "error" 
+        ];
+    
+       if ($query->execute([ ":order_id" => $order_id, ":product_id" => $product_id, ":quantity" => $quantity, ":price" => $price, ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id,
+                "order_id" => $order_id,
+                "product_id" => $product_id,
+                "quantity" => $quantity,
+                "price" => $price,
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+
+    //Función delete order_detail//
+    function delete_order_detail(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        
+        $query = $db->prepare("DELETE from order_detail WHERE id = :id");
+       
+        $array = [
+            "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+            "status" => "error" 
+            ];
+    
+       if ($query->execute([ ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+    
 }  
 
 ?>

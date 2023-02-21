@@ -78,7 +78,7 @@ class users{
     $query = $db->prepare("INSERT INTO users (name, last_name, username, email, address, password, phone_number, birth_date) VALUES (:name, :last_name, :username, :email, :address, :password, :phone_number, :birth_date)");
 
     $array = [
-    "error" => "Hubo un error al agregar los registros, por favor inteta mas tarde",
+    "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
     "status" => "error" 
     ];
 
@@ -102,6 +102,75 @@ class users{
 
     Flight::json($array);
 }
+
+
+    //Función put user//
+    function users_put(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        $name = flight::request()->data->name;
+        $last_name = flight::request()->data->last_name;
+        $username = flight::request()->data->username;
+        $email = flight::request()->data->email;
+        $address = flight::request()->data->address;
+        $password = flight::request()->data->password;
+        $role_id = flight::request()->data->role_id;
+        $phone_number = flight::request()->data->phone_number;
+        $birth_date = flight::request()->data->birth_date;    //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
+        
+        $query = $db->prepare("UPDATE users SET name = :name, last_name = :last_name, username = :username, email = :email, address = :address,
+        password = :password, role_id = :role_id, phone_number = :phone_number, birth_date = :birth_date WHERE id = :id ");
+       
+       $array = [
+        "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+        "status" => "error" 
+        ];
+    
+       if ($query->execute([ ":name" => $name, ":last_name" => $last_name, ":username" => $username, ":email" => $email, ":address" => $address,
+       ":password" => $password, ":role_id" => $role_id, ":phone_number" => $phone_number, ":birth_date" => $birth_date, ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id,
+                "name" => $name,
+                "last_name" => $last_name,
+                "username" => $username,
+                "email" => $email,
+                "password" => $password,
+                "role_id" => $role_id,
+                "phone_number" => $phone_number,
+                "birth_date" => $birth_date,
+    
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+
+    
+    //Función delete user//
+    function delete_users(){
+        $db = flight::db();
+        $id = flight::request()->data->id;
+        
+        $query = $db->prepare("DELETE from users WHERE id = :id");
+       
+        $array = [
+            "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+            "status" => "error" 
+            ];
+    
+       if ($query->execute([ ":id" => $id])) {
+        $array = [
+            "data" => [
+                "id" => $id
+            ],
+            "status" => "success"
+        ];
+       }
+       flight::json($array);
+    }
+
 }
 
 ?>

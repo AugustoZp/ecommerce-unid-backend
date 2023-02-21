@@ -55,7 +55,7 @@ class roles{
 //     $query = $db->prepare("INSERT INTO roles (name) VALUES (:name)");
 
 //     $array = [
-//     "error" => "Hubo un error al agregar los registros, por favor inteta mas tarde",
+//     "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
 //     "status" => "error" 
 //     ];
 
@@ -70,6 +70,61 @@ class roles{
 //     }
 //     Flight::json($array);
 // }
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+
+
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+//Función put user//
+//function roles_put(){
+//     $db = flight::db();
+//     $id = flight::request()->data->id;
+//     $name = flight::request()->data->name;
+        
+//     $query = $db->prepare("UPDATE roles SET name = :name WHERE id = :id ");
+       
+//    $array = [
+//     "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+//     "status" => "error" 
+//     ];
+    
+//    if ($query->execute([ ":name" => $name,":id" => $id])) {
+//     $array = [
+//         "data" => [
+//             "id" => $id,
+//             "name" => $name,
+    
+//         ],
+//         "status" => "success"
+//     ];
+//    }
+//    flight::json($array);
+// }
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+
+
+//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+//Función delete roles//
+//function delete_roles(){
+//  $db = flight::db();
+//    $id = flight::request()->data->id;
+    
+//   $query = $db->prepare("DELETE from roles WHERE id = :id");
+   
+//  $array = [
+//       "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
+//      "status" => "error" 
+//       ];
+
+//  if ($query->execute([ ":id" => $id])) {
+//    $array = [
+//       "data" => [
+//           "id" => $id
+//     ],
+//     "status" => "success"
+//  ];
+// }
+//  flight::json($array);
+//}
 //////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 
 }  
