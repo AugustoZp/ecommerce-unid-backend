@@ -51,7 +51,7 @@ class orders{
             'id' => $data['id'],
             'user_id' => $data['user_id'],
             'total_amount' => $data['total_amount'],
-            'order_status' => $data['username'],
+            'order_status' => $data['order_status'],
         ];
         Flight::json($array);
     }
