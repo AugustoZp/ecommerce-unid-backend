@@ -1,5 +1,7 @@
 <?php
 namespace clases; //NO EDITAR//
+use Firebase\JWT\JWT; //NO EDITAR//
+USE Firebase\JWT\Key; //NO EDITAR//
 require 'vendor/autoload.php'; //NO EDITAR//
 use Flight; //NO EDITAR//
 
@@ -8,13 +10,53 @@ class products
 {
     private $db; //NO EDITAR//
 
+
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=ecommerce_unid','root',''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
         $this->db = Flight::db();
     }
 
+
+    //Funcion Token users//
+    function getToken()
+    {
+        $header = apache_request_headers();
+        if (!isset($header["Authorization"]))
+        {
+        Flight::halt(403, json_encode([
+            "error" => 'unauthenticated request',
+            "status" => 'error'
+            ]));            
+        }
+        $authorization = $header["Authorization"];
+        $authorizationArray = explode(" ", $authorization);
+        $token = $authorizationArray[1];
+        $key = $_ENV['user_key'];
+        try{
+        return JWT::decode($token, new key($key, 'HS256'));
+        }
+        catch(\Throwable $th){
+            Flight::halt(403, json_encode([
+                "error" => $th ->getMessage(),
+                "status" => 'error'
+            ]));    
+        }
+     return $token;
+
+    }
+
+    //Funcion Validar Token users//
+    function validateToken()
+    {
+        $info = $this->getToken();
+        $db= Flight::db();
+        $query = $db->prepare("SELECT * FROM products where id = :id");            
+        $query->execute([":id"=>$info->data]);
+        $rows = $query->fetchColumn();
+    return $rows;
+}
 
     //Función select all products//
     function selectall_products()
@@ -68,6 +110,13 @@ class products
     //Función insert product//
     function products_post()
     {
+        if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }
         $db = Flight::db();
         $category_id = Flight::request()->data->category_id;
         $product_name = Flight::request()->data->product_name;
@@ -105,6 +154,13 @@ class products
     //Función put product//
     function products_put()
     {
+        if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }
         $db = flight::db();
         $id = flight::request()->data->id;
         $category_id = flight::request()->data->category_id;
@@ -146,6 +202,13 @@ class products
     //Función delete product//
     function delete_products()
     {
+        if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }
         $db = flight::db();
         $id = flight::request()->data->id;
         

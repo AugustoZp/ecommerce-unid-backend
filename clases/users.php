@@ -1,5 +1,7 @@
 <?php
 namespace clases; //NO EDITAR//
+use Firebase\JWT\JWT; //NO EDITAR//
+USE Firebase\JWT\Key; //NO EDITAR//
 require 'vendor/autoload.php'; //NO EDITAR//
 use Flight; //NO EDITAR//
 
@@ -11,8 +13,47 @@ class users
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=ecommerce_unid','root',''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
         $this->db = Flight::db();
+    }
+
+    //Funcion Token users//
+    function getToken()
+    {
+        $header = apache_request_headers();
+        if (!isset($header["Authorization"]))
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'unauthenticated request',
+                "status" => 'error'
+            ]));            
+        }
+        $authorization = $header["Authorization"];
+        $authorizationArray = explode(" ", $authorization);
+        $token = $authorizationArray[1];
+        $key = $_ENV['user_key'];
+        try{
+            return JWT::decode($token, new key($key, 'HS256'));
+        }
+        catch(\Throwable $th){
+            Flight::halt(403, json_encode([
+                "error" => $th ->getMessage(),
+                "status" => 'error'
+            ]));
+        }
+        return $token;
+    }
+    
+
+    //Funcion Validar Token users//
+    function validateToken()
+    {
+        $info = $this->getToken();
+        $db= Flight::db();
+        $query = $db->prepare("SELECT * FROM users where id = :id");            
+        $query->execute([":id"=>$info->data]);
+        $rows = $query->fetchColumn();
+        return $rows;
     }
 
 
@@ -42,7 +83,7 @@ class users
         }
         Flight::json([
             "total_rows"=> $query->rowcount(),
-            "rows" => $array
+            "rows" => $array,
         ]);
     }
 
@@ -74,6 +115,13 @@ class users
     //Función insert user//
     function users_post()
     {
+        if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }
         $db = Flight::db();
         $name = Flight::request()->data->name;
         $last_name = Flight::request()->data->last_name;
@@ -117,6 +165,13 @@ class users
     //Función put user//
     function users_put()
     {
+        if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }
         $db = flight::db();
         $id = flight::request()->data->id;
         $name = flight::request()->data->name;
@@ -162,6 +217,13 @@ class users
     //Función delete user//
     function delete_users()
     {
+        if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }
         $db = flight::db();
         $id = flight::request()->data->id;
         
@@ -183,7 +245,37 @@ class users
         }
        flight::json($array);
     }
-
+    //Función JWT auth user//
+    function JWT_auth()
+    {
+        $db = flight::db();
+        $password = flight::request()->data->password;
+        $email = flight::request()->data->email;
+        $query = $db->prepare("SELECT * FROM users where email = :email and password = :password");
+        $array = [
+            "error" => "No se pudo validar su identidad por favor, intente de nuevo",
+            "status" => "error"
+    
+        ];
+        
+        if ($query->execute([":email" => $email, ":password" => $password]))
+        {
+            $user = $query->fetch();
+            $now = strtotime("now");
+            $key = $_ENV['user_key'];
+            $payload = [
+            'exp' => $now + 3600,
+            'data' => $user['id']
+            ];
+    
+            $jwt = JWT::encode($payload, $key, 'HS256');
+            $array = ["token" => $jwt];
+    
+            flight::json($array);
+    
+            
+        }
+    }
 }
 
 ?>

@@ -1,5 +1,9 @@
 <?php
-require 'vendor/autoload.php';
+
+require __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 
 //Estas son las clases, si no es necesario, NO lo edites//
 $users = new clases\users;
@@ -10,7 +14,8 @@ $order_detail = new clases\order_detail;
 $roles = new clases\roles;
 
 
-//get all users from database//
+
+//get all users from dat/abase/
 Flight::route('GET /users', [$users, 'selectall_users']);
 
 //get a single user from database//
@@ -24,6 +29,15 @@ Flight::route('PUT /users', [$users, 'users_put']);
 
 //DELETE users//
 Flight::route('DELETE /users', [$users, 'delete_users']);
+
+//JWT auth//
+Flight::route('POST /auth', [$users, 'JWT_auth']);
+
+//getToken users//
+Flight::route('POST /users', [$users, 'getToken']);
+
+//validateToken users//
+Flight::route('POST /users', [$users, 'validateToken']);
 
 //////////////////////////////
 
@@ -124,7 +138,6 @@ Flight::route('PUT /categories', [$categories, 'categories_put']);
 
 //DELETE categories//
 Flight::route('DELETE /categories', [$categories, 'delete_categories']);
-
 
 Flight::start();
 ?>

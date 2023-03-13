@@ -1,5 +1,7 @@
 <?php
 namespace clases; //NO EDITAR//
+use Firebase\JWT\JWT; //NO EDITAR//
+USE Firebase\JWT\Key; //NO EDITAR//
 require 'vendor/autoload.php'; //NO EDITAR//
 use Flight; //NO EDITAR//
 
@@ -11,10 +13,48 @@ class roles
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=ecommerce_unid','root',''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
         $this->db = Flight::db();
     }
+    //Funcion Token users//
+    /*function getToken() //Esta comentado porque aun no hay un PUT, POST, DELETE
+    {
+        $header = apache_request_headers();
+        if (!isset($header["Authorization"]))
+        {
+        Flight::halt(403, json_encode([
+            "error" => 'unauthenticated request',
+            "status" => 'error'
+            ]));            
+        }
+        $authorization = $header["Authorization"];
+        $authorizationArray = explode(" ", $authorization);
+        $token = $authorizationArray[1];
+        $key = $_ENV['user_key'];
+        try{
+        return JWT::decode($token, new key($key, 'HS256'));
+        }
+        catch(\Throwable $th){
+            Flight::halt(403, json_encode([
+                "error" => $th ->getMessage(),
+                "status" => 'error'
+            ]));    
+        }
+     return $token;
 
+}
+
+    //Funcion Validar Token users//
+    function validateToken()
+    {
+        $info = $this->getToken();
+        $db= Flight::db();
+        $query = $db->prepare("SELECT * FROM roles where id = :id");            
+        $query->execute([":id"=>$info->data]);
+        $rows = $query->fetchColumn();
+    return $rows;
+}
+*/ 
 
     //Función select all roles//
     function selectall_roles()
@@ -57,6 +97,13 @@ class roles
     
         //Función insertar roles//
     //     function roles_post(){
+        /*if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }*/
     //     $db = Flight::db();
     //     $name = Flight::request()->data->name;
     
@@ -84,6 +131,13 @@ class roles
     //////////Está comentado porque no es necesario insertar nuevos roles, POR EL MOMENTO//////////
     //Función put user//
     //function roles_put(){
+        /*if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }*/
     //     $db = flight::db();
     //     $id = flight::request()->data->id;
     //     $name = flight::request()->data->name;
@@ -113,6 +167,13 @@ class roles
     //////////Está comentado porque no es necesario insertar nuevos roles, POR EL MOMENTO//////////
     //Función delete roles//
     //function delete_roles(){
+        /*if(!$this->validateToken())
+        {
+            Flight::halt(403, json_encode([
+                "error" => 'Unauthorized',
+                "status" => 'error'
+            ]));
+        }*/
     //  $db = flight::db();
     //    $id = flight::request()->data->id;
         
