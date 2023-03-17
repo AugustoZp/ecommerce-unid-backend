@@ -75,15 +75,16 @@ class products
         $stock = Flight::request()->data->stock;
         $short_desc = Flight::request()->data->short_desc;
         $description = Flight::request()->data->description;
+        $image = Flight::request() ->data->image;
     
-        $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description) VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description)");
+        $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description, image) VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description, :image)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc, ":description" => $description]))
+        if($query->execute([":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc, ":description" => $description, ":image" => $image]))
         {
             $array = [
                 "data" => [
@@ -95,6 +96,7 @@ class products
                     'stock' => $stock,
                     'short_desc' => $short_desc,
                     'description' => $description,
+                    ':image' => $image,
                 ],
                 "status" => "success"
             ];
