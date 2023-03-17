@@ -13,7 +13,7 @@ class order_detail
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],$_ENV['db_pass']));
         $this->db = Flight::db();
     }
 
@@ -113,17 +113,18 @@ class order_detail
         $db = Flight::db();
         $order_id  = Flight::request()->data->order_id;
         $product_id = Flight::request()->data->product_id;
+        $image = Flight::request()->data->image;
         $quantity = Flight::request()->data->quantity;
         $price = Flight::request()->data->price;
     
-        $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, quantity, price) VALUES (:order_id,:product_id, :quantity, :price)");
+        $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, image, quantity, price) VALUES (:order_id, :product_id, :image, :quantity, :price)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":order_id" => $order_id, ":product_id" => $product_id, ":quantity" => $quantity, ":price" => $price]))
+        if($query->execute([":order_id" => $order_id, ":product_id" => $product_id, $image=>":image", ":quantity" => $quantity, ":price" => $price]))
         {
             $array = [
                 "data" => [
@@ -131,6 +132,7 @@ class order_detail
                     'id' => $db->lastInsertId(),
                     'order_id' => $order_id,
                     'product_id' => $product_id,
+                    'image' => $image,
                     'quantity' => $quantity,
                     'price' => $price,
                 ],
@@ -155,24 +157,26 @@ class order_detail
         $id = flight::request()->data->id;
         $order_id = flight::request()->data->order_id;
         $product_id = flight::request()->data->product_id;
+        $image = flight::request()->data->image;
         $quantity = flight::request()->data->quantity;
         $price = flight::request()->data->price;
 
         
-        $query = $db->prepare("UPDATE order_detail SET order_id = :order_id, product_id = :product_id, quantity = :quantity, price = :price WHERE id = :id ");
+        $query = $db->prepare("UPDATE order_detail SET order_id = :order_id, product_id = :product_id, image = :image, quantity = :quantity, price = :price WHERE id = :id ");
        
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if ($query->execute([ ":order_id" => $order_id, ":product_id" => $product_id, ":quantity" => $quantity, ":price" => $price, ":id" => $id]))
+        if ($query->execute([ ":order_id" => $order_id, ":product_id" => $product_id, ":image" => $image, ":quantity" => $quantity, ":price" => $price, ":id" => $id]))
         {
             $array = [
                 "data" => [
                     "id" => $id,
                     "order_id" => $order_id,
                     "product_id" => $product_id,
+                    "image" => $image,
                     "quantity" => $quantity,
                     "price" => $price,
                 ],

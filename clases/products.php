@@ -14,7 +14,7 @@ class products
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],$_ENV['db_pass']));
         $this->db = Flight::db();
     }
 
@@ -124,15 +124,16 @@ class products
         $stock = Flight::request()->data->stock;
         $short_desc = Flight::request()->data->short_desc;
         $description = Flight::request()->data->description;
+        $image = Flight::request()->data->image;
     
-        $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description) VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description)");
+        $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description, image) VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description, :image)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc, ":description" => $description]))
+        if($query->execute([":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc, ":description" => $description, ":image" => $image]))
         {
             $array = [
                 "data" => [
@@ -144,6 +145,7 @@ class products
                     'stock' => $stock,
                     'short_desc' => $short_desc,
                     'description' => $description,
+                    'image' => $image,
                 ],
                 "status" => "success"
             ];
@@ -169,10 +171,11 @@ class products
         $stock = flight::request()->data->stock;
         $short_desc = flight::request()->data->short_desc;
         $description = flight::request()->data->description;
+        $image = flight::request()->data->image;
 
     
         $query = $db->prepare("UPDATE products SET category_id = :category_id, product_name = :product_name, price = :price, stock = :stock, short_desc = :short_desc,
-        description = :description WHERE id = :id ");
+        description = :description, image = :image WHERE id = :id ");
    
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
@@ -180,7 +183,7 @@ class products
         ];
 
         if ($query->execute([ ":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc,
-        ":description" => $description, ":id" => $id]))
+        ":description" => $description, ":image" => $image, ":id" => $id]))
         {
             $array = [
                "data" => [
@@ -191,6 +194,7 @@ class products
                    "stock" => $stock,
                    "short_desc" => $short_desc,
                    "description" => $description,
+                   "image" => $image,
                ],
                "status" => "success"
             ];

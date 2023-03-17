@@ -13,7 +13,7 @@ class roles
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],$_ENV['db_pass']));
         $this->db = Flight::db();
     }
     //Funcion Token users//
