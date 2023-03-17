@@ -14,7 +14,7 @@ class categories
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],$_ENV['db_pass']));
         $this->db = Flight::db();
     }
 
@@ -107,21 +107,23 @@ class categories
         }
         $db = Flight::db();
         $name = Flight::request()->data->name;
+        $image =Flight::request()->data->image;
     
-        $query = $db->prepare("INSERT INTO categories (name) VALUES (:name)");
+        $query = $db->prepare("INSERT INTO categories (name, image) VALUES (:name, :image)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if($query->execute([":name" => $name]))
+        if($query->execute([":name" => $name, ":image" => $image]))
         {
             $array = [
                 "data" => [
 
                     'id' => $db->lastInsertId(),
                     'name' => $name,
+                    'image' => $image,
                 ],
                 "status" => "success"
             ];
@@ -143,21 +145,22 @@ class categories
         $db = flight::db();
         $id = flight::request()->data->id;
         $name = flight::request()->data->name;
-        //$image = flight::request()->data->image;//
+        $image = flight::request()->data->image;
         
-        $query = $db->prepare("UPDATE categories SET name = :name WHERE id = :id ");
+        $query = $db->prepare("UPDATE categories SET name = :name, image = :image WHERE id = :id ");
        
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if ($query->execute([ ":name" => $name, ":id" => $id]))
+        if ($query->execute([ ":name" => $name, ":image" => $image, ":id" => $id]))
         {
             $array = [
                 "data" => [
                     "id" => $id,
                     "name" => $name,
+                    "image" => $image,
 
                 ],
                 "status" => "success"

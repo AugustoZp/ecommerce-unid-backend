@@ -13,7 +13,7 @@ class users
     //Función constructor CONEXIÓN A BASE DE DATOS, No modificar el DB//
     function __construct()
     {
-        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],''));
+        Flight::register('db', 'PDO', array('mysql:host='.$_ENV['db_host'].';dbname='. $_ENV['db_name'],$_ENV['db_user'],$_ENV['db_pass']));
         $this->db = Flight::db();
     }
 
@@ -115,13 +115,13 @@ class users
     //Función insert user//
     function users_post()
     {
-        if(!$this->validateToken())
-        {
-            Flight::halt(403, json_encode([
-                "error" => 'Unauthorized',
-                "status" => 'error'
-            ]));
-        }
+        // if(!$this->validateToken())
+        // {
+        //     Flight::halt(403, json_encode([
+        //         "error" => 'Unauthorized',
+        //         "status" => 'error'
+        //     ]));
+        // }
         $db = Flight::db();
         $name = Flight::request()->data->name;
         $last_name = Flight::request()->data->last_name;
