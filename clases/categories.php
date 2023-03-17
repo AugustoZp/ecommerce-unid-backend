@@ -59,21 +59,23 @@ class categories
     {
         $db = Flight::db();
         $name = Flight::request()->data->name;
+        $image = Flight::request() ->data->image;
     
-        $query = $db->prepare("INSERT INTO categories (name) VALUES (:name)");
+        $query = $db->prepare("INSERT INTO categories (name, image) VALUES (:name, :image)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if($query->execute([":name" => $name]))
+        if($query->execute([":name" => $name, ":image" => $image]))
         {
             $array = [
                 "data" => [
 
                     'id' => $db->lastInsertId(),
                     'name' => $name,
+                    'image' => $image,
                 ],
                 "status" => "success"
             ];
