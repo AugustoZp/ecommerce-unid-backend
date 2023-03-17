@@ -67,17 +67,18 @@ class order_detail
         $db = Flight::db();
         $order_id  = Flight::request()->data->order_id ;
         $product_id = Flight::request()->data->product_id;
+        $image = Flight::request()->data->image;
         $quantity = Flight::request()->data->quantity;
         $price = Flight::request()->data->price;
     
-        $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, quantity, price) VALUES (:order_id,:product_id, :quantity, :price)");
+        $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, image, quantity, price) VALUES (:order_id,:product_id, :image, :quantity, :price)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":order_id" => $order_id, ":product_id" => $product_id, ":quantity" => $quantity, ":price" => $price]))
+        if($query->execute([":order_id" => $order_id, ":product_id" => $product_id, ":image" => $image, ":quantity" => $quantity, ":price" => $price]))
         {
             $array = [
                 "data" => [
@@ -85,6 +86,7 @@ class order_detail
                     'id' => $db->lastInsertId(),
                     'order_id' => $order_id,
                     'product_id' => $product_id,
+                    'image' => $image,
                     'quantity' => $quantity,
                     'price' => $price,
                 ],
