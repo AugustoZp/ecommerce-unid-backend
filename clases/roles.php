@@ -68,7 +68,8 @@ class roles
         {
             $array[] = [
                 'id' => $row['id'],
-                'name ' => $row['name'],
+                'name' => $row['name'],
+                'creation_date'=>$row['creation_date'],
             ];
         }
         Flight::json([
@@ -87,7 +88,9 @@ class roles
 
         $array = [
             'id' => $data['id'],
-            'name ' => $data['name'],
+            'name' => $data['name'],
+            'creation_date'=>$data['creation_date'],
+
         ];
         Flight::json($array);
     }              

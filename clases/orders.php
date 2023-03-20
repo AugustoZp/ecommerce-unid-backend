@@ -71,6 +71,7 @@ class orders{
                 'user_id' => $row['user_id'],
                 'total_amount' => $row['total_amount'],
                 'order_status' => $row['order_status'],
+                'creation_date' => $row['creation_date'],
             ];
         }
         Flight::json([
@@ -92,6 +93,7 @@ class orders{
             'user_id' => $data['user_id'],
             'total_amount' => $data['total_amount'],
             'order_status' => $data['order_status'],
+            'creation_date' => $data['creation_date'],
         ];
         Flight::json($array);
     }
@@ -107,18 +109,26 @@ class orders{
                 "status" => 'error'
             ]));
         }
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
         $db = Flight::db();
-        $user_id = Flight::request()->data->user_id;
-        $total_amount = Flight::request()->data->total_amount;
+
+        $user_id = $data->user_id;
+        $total_amount = $data->total_amount;
+        $order_status = $data->order_status;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
     
-        $query = $db->prepare("INSERT INTO orders (user_id,total_amount) VALUES (:user_id,:total_amount)");
+        $query = $db->prepare("INSERT INTO orders (user_id, total_amount, order_status, creation_date) 
+        VALUES (:user_id, :total_amount, :order_status, :creation_date)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if($query->execute([":user_id" => $user_id, "total_amount" => $total_amount]))
+        if($query->execute([":user_id" => $user_id, ":total_amount" => $total_amount, ":order_status" => $order_status, ":creation_date" => $creation_date]))
         {
             $array = [
                 "data" => [
@@ -126,6 +136,8 @@ class orders{
                     'id' => $db->lastInsertId(),
                     'user_id' => $user_id,
                     'total_amount' => $total_amount,
+                    'order_status' => $order_status,
+                    'creation_date' => $creation_date,
                 ],
                 "status" => "success"
             ];
@@ -144,26 +156,36 @@ class orders{
                 "status" => 'error'
             ]));
         }
-        $db = flight::db();
-        $id = flight::request()->data->id;;
-        $user_id = Flight::request()->data->user_id;
-        $total_amount = Flight::request()->data->total_amount;
-    
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
+        $db = Flight::db();
+
+        $id = $data->id;
+        $user_id = $data->user_id;
+        $total_amount = $data->total_amount;
+        $order_status = $data->order_status;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//;
         
-        $query = $db->prepare("UPDATE orders SET user_id = :user_id, total_amount = :total_amount WHERE id = :id ");
+        $query = $db->prepare("UPDATE orders SET user_id = :user_id, total_amount = :total_amount, order_status = :order_status,
+         creation_date = :creation_date WHERE id = :id ");
        
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if ($query->execute([ ":user_id" => $user_id, ":total_amount" => $total_amount, ":id" => $id]))
+        if ($query->execute([ ":user_id" => $user_id, ":total_amount" => $total_amount, ":order_status" => $order_status, 
+        ":creation_date" => $creation_date, ":id" => $id]))
         {
             $array = [
                 "data" => [
                     "id" => $id,
                     "user_id" => $user_id,
                     "total_amount" => $total_amount,
+                    "order_status" => $order_status,
+                    "creation_date" => $creation_date,
                 ],
                 "status" => "success"
             ];

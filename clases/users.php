@@ -78,6 +78,7 @@ class users
                 'role_id' => $row['role_id'],
                 'phone_number' => $row['phone_number'],
                 'birth_date' => $row['birth_date'],
+                'creation_date'=>$row['creation_date'],
                 'status' => $row['status']
             ];
         }
@@ -106,6 +107,7 @@ class users
             'role_id' => $data['role_id'],
             'phone_number' => $data['phone_number'],
             'birth_date' => $data['birth_date'],
+            'creation_date'=>$data['creation_date'],
             'status' => $data['status']
         ];
         Flight::json($array);
@@ -115,32 +117,32 @@ class users
     //Función insert user//
     function users_post()
     {
-        // if(!$this->validateToken())
-        // {
-        //     Flight::halt(403, json_encode([
-        //         "error" => 'Unauthorized',
-        //         "status" => 'error'
-        //     ]));
-        // }
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
+        
         $db = Flight::db();
-        $name = Flight::request()->data->name;
-        $last_name = Flight::request()->data->last_name;
-        $username = Flight::request()->data->username;
-        $email = Flight::request()->data->email;
-        $address = Flight::request()->data->address;
-        $password = Flight::request()->data->password;
-        $phone_number = Flight::request()->data->phone_number;
-    
-        $birth_date = Flight::request()->data->birth_date;   //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
+        $name = $data->name;
+        $last_name = $data->last_name;
+        $username = $data->username;
+        $email = $data->email;
+        $address = $data->address;
+        $password = $data->password;
+        $phone_number = $data->phone_number;
+        $birth_date = $data->birth_date; //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
 
-        $query = $db->prepare("INSERT INTO users (name, last_name, username, email, address, password, phone_number, birth_date) VALUES (:name, :last_name, :username, :email, :address, :password, :phone_number, :birth_date)");
+        $query = $db->prepare("INSERT INTO users (name, last_name, username, email, address, password, phone_number, birth_date, creation_date) 
+        VALUES (:name, :last_name, :username, :email, :address, :password, :phone_number, :birth_date, :creation_date)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":name" => $name, ":last_name" => $last_name, ":username" => $username, ":email" => $email, ":address" => $address, ":password" => $password, ":phone_number" => $phone_number, ":birth_date" => $birth_date]))
+        if($query->execute([":name" => $name, ":last_name" => $last_name, ":username" => $username, ":email" => $email, ":address" => $address, 
+        ":password" => $password, ":phone_number" => $phone_number, ":birth_date" => $birth_date, ":creation_date" => $creation_date]))
         {
             $array = [
                 "data" => [
@@ -153,7 +155,8 @@ class users
                     'address' => $address,
                     'password' => $password,
                     'phone_number' => $phone_number,
-                    'birth_date' => $birth_date,   
+                    'birth_date' => $birth_date,
+                    'creation_date' => $creation_date,
                 ],
                 "status" => "success"
             ];
@@ -172,20 +175,40 @@ class users
                 "status" => 'error'
             ]));
         }
-        $db = flight::db();
-        $id = flight::request()->data->id;
-        $name = flight::request()->data->name;
-        $last_name = flight::request()->data->last_name;
-        $username = flight::request()->data->username;
-        $email = flight::request()->data->email;
-        $address = flight::request()->data->address;
-        $password = flight::request()->data->password;
-        $role_id = flight::request()->data->role_id;
-        $phone_number = flight::request()->data->phone_number;
-        $birth_date = flight::request()->data->birth_date;    //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
+        $db = Flight::db();
+
+        $id = $data->id;
+        $name = $data->name;
+        $last_name = $data->last_name;
+        $username = $data->username;
+        $email = $data->email;
+        $address = $data->address;
+        $password = $data->password;
+        $role_id = $data->role_id;
+        $phone_number = $data->phone_number;
+        $birth_date = $data->birth_date; //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+
+        //ESTA ES NUESTRA EDICIÓN // NO ELIMINAR //
+        //$db = flight::db();
+        //$id = flight::request()->data->id;
+        //$name = flight::request()->data->name;
+        //$last_name = flight::request()->data->last_name;
+        //$username = flight::request()->data->username;
+        //$email = flight::request()->data->email;
+        //$address = flight::request()->data->address;
+        //$password = flight::request()->data->password;
+        //$role_id = flight::request()->data->role_id;
+        //$phone_number = flight::request()->data->phone_number;
+        //$birth_date = flight::request()->data->birth_date;    //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
+        //AQUI FINALIZA NUESTRA EDICIÓN//
         
         $query = $db->prepare("UPDATE users SET name = :name, last_name = :last_name, username = :username, email = :email, address = :address,
-        password = :password, role_id = :role_id, phone_number = :phone_number, birth_date = :birth_date WHERE id = :id ");
+        password = :password, role_id = :role_id, phone_number = :phone_number, birth_date = :birth_date, creation_date = :creation_date WHERE id = :id ");
        
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
@@ -193,7 +216,7 @@ class users
         ];
     
        if ($query->execute([ ":name" => $name, ":last_name" => $last_name, ":username" => $username, ":email" => $email, ":address" => $address,
-       ":password" => $password, ":role_id" => $role_id, ":phone_number" => $phone_number, ":birth_date" => $birth_date, ":id" => $id]))
+       ":password" => $password, ":role_id" => $role_id, ":phone_number" => $phone_number, ":birth_date" => $birth_date,":creation_date" => $creation_date, ":id" => $id]))
         {
             $array = [
                 "data" => [
@@ -202,10 +225,12 @@ class users
                     "last_name" => $last_name,
                     "username" => $username,
                     "email" => $email,
+                    "address" => $address,
                     "password" => $password,
                     "role_id" => $role_id,
                     "phone_number" => $phone_number,
                     "birth_date" => $birth_date,
+                    "creation_date" => $creation_date,
                 ],
                 "status" => "success"
             ];

@@ -72,6 +72,7 @@ class order_detail
                 'image' => $row['image'],
                 'quantity' => $row['quantity'],
                 'price' => $row['price'],
+                'creation_date' => $row['creation_date'],
             ];
         }
         Flight::json([
@@ -95,6 +96,7 @@ class order_detail
             'image' => $data['image'],
             'quantity' => $data['quantity'],
             'price' => $data['price'],
+            'creation_date' => $data['creation_date'],
         ];  
         Flight::json($array);
     }
@@ -110,21 +112,29 @@ class order_detail
                 "status" => 'error'
             ]));
         }
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
         $db = Flight::db();
-        $order_id  = Flight::request()->data->order_id;
-        $product_id = Flight::request()->data->product_id;
-        $image = Flight::request()->data->image;
-        $quantity = Flight::request()->data->quantity;
-        $price = Flight::request()->data->price;
-    
-        $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, image, quantity, price) VALUES (:order_id, :product_id, :image, :quantity, :price)");
+
+        $order_id  = $data->order_id;
+        $product_id = $data->product_id;
+        $image = $data->image;
+        $quantity = $data->quantity;
+        $price = $data->price;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+        
+        $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, image, quantity, price, creation_date) 
+        VALUES (:order_id, :product_id, :image, :quantity, :price,  :creation_date)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":order_id" => $order_id, ":product_id" => $product_id, $image=>":image", ":quantity" => $quantity, ":price" => $price]))
+        if($query->execute([":order_id" => $order_id, ":product_id" => $product_id, ":image" => $image, 
+        ":quantity" => $quantity, ":price" => $price, ":creation_date" => $creation_date]))
         {
             $array = [
                 "data" => [
@@ -135,6 +145,7 @@ class order_detail
                     'image' => $image,
                     'quantity' => $quantity,
                     'price' => $price,
+                    'creation_date' => $creation_date,
                 ],
                 "status" => "success"
             ];
@@ -153,23 +164,31 @@ class order_detail
                 "status" => 'error'
             ]));
         }
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
         $db = flight::db();
-        $id = flight::request()->data->id;
-        $order_id = flight::request()->data->order_id;
-        $product_id = flight::request()->data->product_id;
-        $image = flight::request()->data->image;
-        $quantity = flight::request()->data->quantity;
-        $price = flight::request()->data->price;
+
+        $id = $data->id;
+        $order_id = $data->order_id;
+        $product_id = $data->product_id;
+        $image = $data->image;
+        $quantity = $data->quantity;
+        $price = $data->price;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
 
         
-        $query = $db->prepare("UPDATE order_detail SET order_id = :order_id, product_id = :product_id, image = :image, quantity = :quantity, price = :price WHERE id = :id ");
+        $query = $db->prepare("UPDATE order_detail SET order_id = :order_id, product_id = :product_id, image = :image,
+         quantity = :quantity, price = :price, creation_date = :creation_date WHERE id = :id ");
        
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if ($query->execute([ ":order_id" => $order_id, ":product_id" => $product_id, ":image" => $image, ":quantity" => $quantity, ":price" => $price, ":id" => $id]))
+        if ($query->execute([ ":order_id" => $order_id, ":product_id" => $product_id, ":image" => $image, 
+        ":quantity" => $quantity, ":price" => $price, ":creation_date" => $creation_date, ":id" => $id]))
         {
             $array = [
                 "data" => [
@@ -179,6 +198,7 @@ class order_detail
                     "image" => $image,
                     "quantity" => $quantity,
                     "price" => $price,
+                    "creation_date" => $creation_date,
                 ],
                 "status" => "success"
             ];
