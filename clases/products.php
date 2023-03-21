@@ -70,13 +70,14 @@ class products
         {
             $array[] = [
                 'id' => $row['id'],
-                'category_id ' => $row['category_id'],
+                'category_id' => $row['category_id'],
                 'product_name' => $row['product_name'],
                 'price' => $row['price'],
                 'stock' => $row['stock'],
                 'short_desc' => $row['short_desc'],
                 'description' => $row['description'],
                 'image' => $row['image'],
+                'creation_date' => $row['creation_date'],
             ];
         }
         Flight::json([
@@ -95,13 +96,14 @@ class products
     
         $array = [
             'id' => $data['id'],
-            'category_id ' => $data['category_id'],
+            'category_id' => $data['category_id'],
             'product_name' => $data['product_name'],
             'price' => $data['price'],
             'stock' => $data['stock'],
             'short_desc' => $data['short_desc'],
             'description' => $data['description'],
             'image' => $data['image'],
+            'creation_date' => $data['creation_date'],
         ];
         Flight::json($array);
     }
@@ -117,23 +119,31 @@ class products
                 "status" => 'error'
             ]));
         }
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
         $db = Flight::db();
-        $category_id = Flight::request()->data->category_id;
-        $product_name = Flight::request()->data->product_name;
-        $price = Flight::request()->data->price;
-        $stock = Flight::request()->data->stock;
-        $short_desc = Flight::request()->data->short_desc;
-        $description = Flight::request()->data->description;
-        $image = Flight::request()->data->image;
+        
+        $category_id = $data->category_id;
+        $product_name = $data->product_name;
+        $price = $data->price;
+        $stock = $data->stock;
+        $short_desc = $data->short_desc;
+        $description = $data->description;
+        $image = $data->image;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
     
-        $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description, image) VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description, :image)");
+        $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description, image, creation_date) 
+        VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description, :image, :creation_date)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
 
-        if($query->execute([":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc, ":description" => $description, ":image" => $image]))
+        if($query->execute([":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, 
+        ":short_desc" => $short_desc, ":description" => $description, ":image" => $image, ":creation_date" => $creation_date]))
         {
             $array = [
                 "data" => [
@@ -146,6 +156,7 @@ class products
                     'short_desc' => $short_desc,
                     'description' => $description,
                     'image' => $image,
+                    'creation_date' => $creation_date,
                 ],
                 "status" => "success"
             ];
@@ -163,19 +174,25 @@ class products
                 "status" => 'error'
             ]));
         }
-        $db = flight::db();
-        $id = flight::request()->data->id;
-        $category_id = flight::request()->data->category_id;
-        $product_name = flight::request()->data->product_name;
-        $price = flight::request()->data->price;
-        $stock = flight::request()->data->stock;
-        $short_desc = flight::request()->data->short_desc;
-        $description = flight::request()->data->description;
-        $image = flight::request()->data->image;
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
+        $db = Flight::db();
+        
+        $id = $data->id;
+        $category_id = $data->category_id;
+        $product_name = $data->product_name;
+        $price = $data->price;
+        $stock = $data->stock;
+        $short_desc = $data->short_desc;
+        $description = $data->description;
+        $image = $data->image;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
 
     
         $query = $db->prepare("UPDATE products SET category_id = :category_id, product_name = :product_name, price = :price, stock = :stock, short_desc = :short_desc,
-        description = :description, image = :image WHERE id = :id ");
+        description = :description, image = :image, creation_date = :creation_date WHERE id = :id ");
    
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
@@ -183,7 +200,7 @@ class products
         ];
 
         if ($query->execute([ ":category_id" => $category_id, ":product_name" => $product_name, ":price" => $price, ":stock" => $stock, ":short_desc" => $short_desc,
-        ":description" => $description, ":image" => $image, ":id" => $id]))
+        ":description" => $description, ":image" => $image, ":creation_date" => $creation_date, ":id" => $id]))
         {
             $array = [
                "data" => [
@@ -195,6 +212,7 @@ class products
                    "short_desc" => $short_desc,
                    "description" => $description,
                    "image" => $image,
+                   "creation_date" => $creation_date,
                ],
                "status" => "success"
             ];

@@ -71,6 +71,7 @@ class categories
                 'id' => $row['id'],
                 'name' => $row['name'],
                 'image' => $row['image'],
+                'creation_date' => $row['creation_date'],
             ];
         }
         Flight::json([
@@ -91,9 +92,11 @@ class categories
             'id' => $data['id'],
             'name' => $data['name'],
             'image' => $data['image'],
+            'creation_date' => $data['creation_date'],  
         ];    
         Flight::json($array);
     }
+
 
     //Función insert categorie//
     function categories_post()
@@ -105,18 +108,24 @@ class categories
                 "status" => 'error'
             ]));
         }
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
         $db = Flight::db();
-        $name = Flight::request()->data->name;
-        $image =Flight::request()->data->image;
+
+        $name = $data->name;
+        $image = $data->image;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
     
-        $query = $db->prepare("INSERT INTO categories (name, image) VALUES (:name, :image)");
+        $query = $db->prepare("INSERT INTO categories (name, image, creation_date) VALUES (:name, :image, :creation_date)");
     
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if($query->execute([":name" => $name, ":image" => $image]))
+        if($query->execute([":name" => $name, ":image" => $image, ":creation_date" => $creation_date]))
         {
             $array = [
                 "data" => [
@@ -124,6 +133,7 @@ class categories
                     'id' => $db->lastInsertId(),
                     'name' => $name,
                     'image' => $image,
+                    'creation_date' => $creation_date,
                 ],
                 "status" => "success"
             ];
@@ -142,25 +152,32 @@ class categories
                 "status" => 'error'
             ]));
         }
-        $db = flight::db();
-        $id = flight::request()->data->id;
-        $name = flight::request()->data->name;
-        $image = flight::request()->data->image;
-        
-        $query = $db->prepare("UPDATE categories SET name = :name, image = :image WHERE id = :id ");
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
+        $db = Flight::db();
+
+        $id = $data->id;
+        $name = $data->name;
+        $image = $data->image;
+        $creation_date = $data->creation_date;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+
+        $query = $db->prepare("UPDATE categories SET name = :name, image = :image, creation_date = :creation_date WHERE id = :id ");
        
         $array = [
         "error" => "Hubo un error al agregar los registros, por favor intenta mas tarde",
         "status" => "error" 
         ];
     
-        if ($query->execute([ ":name" => $name, ":image" => $image, ":id" => $id]))
+        if ($query->execute([ ":name" => $name, ":image" => $image, ":creation_date" => $creation_date, ":id" => $id]))
         {
             $array = [
                 "data" => [
                     "id" => $id,
                     "name" => $name,
                     "image" => $image,
+                    "creation_date" => $creation_date,
 
                 ],
                 "status" => "success"
