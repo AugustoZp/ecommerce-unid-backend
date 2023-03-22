@@ -273,9 +273,16 @@ class users
     //Función JWT auth user//
     function JWT_auth()
     {
+
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        $body = Flight::request()->getBody();
+        $data = json_decode($body);
         $db = flight::db();
-        $password = flight::request()->data->password;
-        $email = flight::request()->data->email;
+
+        $email = $data->email;
+        $password = $data->password;
+        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR// 
+
         $query = $db->prepare("SELECT * FROM users where email = :email and password = :password");
         $array = [
             "error" => "No se pudo validar su identidad por favor, intente de nuevo",
