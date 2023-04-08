@@ -58,7 +58,21 @@ class order_detail
     //Función select all order_detail//
     function selectall_order_detail()
     {
-        $query = $this->db->prepare("SELECT * FROM order_detail");
+         ////////Join de los Product_id de la tabla order_detail con  el campo Product_name de la tabla Products//////////////
+        $query = $this->db->prepare("SELECT 
+        p.product_name AS 'product_name',
+        od.id AS 'id',
+        od.order_id AS 'order_id',
+        od.image AS 'image',
+        od.quantity AS 'quantity',
+        od.price AS 'price',
+        od.creation_date AS 'creation_date'
+        FROM order_detail od 
+        JOIN products p 
+        ON p.id = od.product_id;");
+        ////////Termina el Join de los product_id con  el campo Product_name//////////////
+
+
         $query->execute();
         $data = $query->FetchAll();
     
@@ -68,7 +82,7 @@ class order_detail
             $array[] = [
                 'id' => $row['id'],
                 'order_id' => $row['order_id'],
-                'product_id' => $row['product_id'],
+                'product_name' => $row['product_name'],
                 'image' => $row['image'],
                 'quantity' => $row['quantity'],
                 'price' => $row['price'],
@@ -85,14 +99,27 @@ class order_detail
     //Función select single order_detail//
     function selectone_order_detail($id)
     {
-        $query = $this->db->prepare("SELECT * FROM order_detail WHERE id = :id");
+        ////////Join del product_id de la tabla order_detail con  el campo Product_name de la tabla Products//////////////
+        $query = $this->db->prepare("SELECT 
+        p.product_name AS 'product_name',
+        od.id AS 'id',
+        od.order_id AS 'order_id',
+        od.image AS 'image',
+        od.quantity AS 'quantity',
+        od.price AS 'price',
+        od.creation_date AS 'creation_date'
+        FROM order_detail od 
+        JOIN products p 
+        ON p.id = od.product_id WHERE od.id = :id");
+        ////////Termina el Join del product_id con  el campo Product_name//////////////
+
         $query->execute([":id" => $id]);
         $data = $query->Fetch();
     
         $array = [
             'id' => $data['id'],
             'order_id' => $data['order_id'],
-            'product_id' => $data['product_id'],
+            'product_name' => $data['product_name'],
             'image' => $data['image'],
             'quantity' => $data['quantity'],
             'price' => $data['price'],
