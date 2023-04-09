@@ -33,6 +33,9 @@ Flight::route('DELETE /users', [$users, 'delete_users']);
 //JWT auth//
 Flight::route('POST /auth', [$users, 'JWT_auth']);
 
+//JWT admin auth//
+Flight::route('POST /admin', [$users, 'JWT_admin_auth']);
+
 //getToken users//
 Flight::route('POST /users', [$users, 'getToken']);
 

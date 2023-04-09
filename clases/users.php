@@ -270,6 +270,8 @@ class users
         }
        flight::json($array);
     }
+
+
     //Función JWT auth user//
     function JWT_auth()
     {
@@ -308,6 +310,63 @@ class users
             
         }
     }
+
+
+        //Función JWT auth admin//
+        function JWT_admin_auth()
+        {
+        
+        //ESTA ES LA EDICIÓN DEL PROFESOR//
+            $body = Flight::request()->getBody();
+            $data = json_decode($body);
+            $db = flight::db();
+    
+            $email = $data->email;
+            $password = $data->password;
+            $role_id = 1;
+
+    // Proporcionar los datos necesarios
+    if (!$email || !$password) {
+        $error = [
+            "error" => "Por favor, ingrese su correo electrónico y contraseña.",
+            "status" => "error"
+        ];
+        flight::json($error);
+        return;
+    }
+
+    // Verificar si el usuario tiene el rol 1
+    $db = flight::db();
+    $query = $db->prepare("SELECT * FROM users WHERE email = :email AND password = :password AND role_id = :role_id");
+    $result = $query->execute([
+        ":email" => $email,
+        ":password" => $password,
+        ":role_id" => $role_id
+    ]);
+    $user = $query->fetch();
+
+    if (!$result || !$user) {
+        $error = [
+            "error" => "Acceso denegado. Solo los administradores tienen acceso a este módulo",
+            "status" => "error"
+        ];
+        flight::json($error);
+        return;
+    }
+
+    // Generar el token
+    $now = strtotime("now");
+    $key = $_ENV['user_key'];
+    $payload = [
+        'exp' => $now + 3600,
+        'data' => $user['id']
+    ];
+
+    $jwt = JWT::encode($payload, $key, 'HS256');
+    $response = ["token" => $jwt];
+    flight::json($response);
+}
 }
 
 ?>
+
