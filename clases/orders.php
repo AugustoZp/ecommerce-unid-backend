@@ -59,7 +59,18 @@ class orders{
     //Función select all orders//
     function selectall_orders()
     {
-        $query = $this->db->prepare("SELECT * FROM orders");
+        ////////////JOIN de user_id de la tabla ORDERS con  el campo username de la tabla USERS//////////////
+        $query = $this->db->prepare("SELECT 
+        u.username AS 'username',
+        o.id AS 'id',
+        o.total_amount AS 'total_amount',
+        o.order_status AS 'order_status',
+        o.creation_date AS 'creation_date'
+        FROM orders o
+        JOIN users u 
+        ON u.id = o.user_id");
+        //////////Termina el JOIN de user_id de la tabla ORDERS con el campo username de la tabla USERS//////////////
+
         $query->execute();
         $data = $query->FetchAll();
     
@@ -68,7 +79,7 @@ class orders{
         {
             $array[] = [
                 'id' => $row['id'],
-                'user_id' => $row['user_id'],
+                'username' => $row['username'],
                 'total_amount' => $row['total_amount'],
                 'order_status' => $row['order_status'],
                 'creation_date' => $row['creation_date'],
@@ -84,20 +95,31 @@ class orders{
     //Función select single order//
     function selectone_order($id)
     {
-        $query = $this->db->prepare("SELECT * FROM orders WHERE id = :id");
+        //////////JOIN de user_id de la tabla ORDERS con  el campo username de la tabla USERS//////////////
+        $query = $this->db->prepare("SELECT 
+        u.username AS 'username',
+        o.id AS 'id',
+        o.total_amount AS 'total_amount',
+        o.order_status AS 'order_status',
+        o.creation_date AS 'creation_date'
+        FROM orders o
+        JOIN users u 
+        ON u.id = o.user_id
+        WHERE o.id = :id");
+        //////////Termina el JOIN de user_id de la tabla ORDERS con el campo username de la tabla USERS///////////
+
         $query->execute([":id" => $id]);
         $data = $query->Fetch();
 
         $array = [
             'id' => $data['id'],
-            'user_id' => $data['user_id'],
+            'username' => $data['username'],
             'total_amount' => $data['total_amount'],
             'order_status' => $data['order_status'],
             'creation_date' => $data['creation_date'],
         ];
         Flight::json($array);
     }
-
 
     //Función insert order//
     function order_post()
