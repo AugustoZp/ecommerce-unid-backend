@@ -4,7 +4,7 @@ use Firebase\JWT\JWT; //NO EDITAR//
 USE Firebase\JWT\Key; //NO EDITAR//
 require 'vendor/autoload.php'; //NO EDITAR//
 use Flight; //NO EDITAR//
-
+  
 
 class products
 {
@@ -18,6 +18,7 @@ class products
         $this->db = Flight::db();
     }
 
+    
 
     //Funcion Token users//
     function getToken()
@@ -52,7 +53,7 @@ class products
     {
         $info = $this->getToken();
         $db= Flight::db();
-        $query = $db->prepare("SELECT * FROM products where id = :id");            
+        $query = $db->prepare("SELECT * FROM users where id = :id");            
         $query->execute([":id"=>$info->data]);
         $rows = $query->fetchColumn();
     return $rows;
@@ -119,7 +120,7 @@ class products
                 "status" => 'error'
             ]));
         }
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -132,7 +133,7 @@ class products
         $description = $data->description;
         $image = $data->image;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
     
         $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description, image, creation_date) 
         VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description, :image, :creation_date)");
@@ -174,7 +175,7 @@ class products
                 "status" => 'error'
             ]));
         }
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -188,7 +189,7 @@ class products
         $description = $data->description;
         $image = $data->image;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
 
     
         $query = $db->prepare("UPDATE products SET category_id = :category_id, product_name = :product_name, price = :price, stock = :stock, short_desc = :short_desc,
