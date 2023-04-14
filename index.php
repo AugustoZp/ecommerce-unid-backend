@@ -15,20 +15,20 @@ $roles = new clases\roles;
 
 
 
-//get all users from dat/abase/
-Flight::route('GET /users', [$users, 'selectall_users']);
+//get all users from database/
+Flight::route('GET /all_users', [$users, 'selectall_users']);
 
 //get a single user from database//
-Flight::route('GET /users/@id', [$users, 'selectone_user']);
+Flight::route('GET /one_user/@id', [$users, 'selectone_user']);
 
 //POST users//
-Flight::route('POST /users', [$users, 'users_post']);
+Flight::route('POST /insert_user', [$users, 'users_post']);
 
 //PUT users//
-Flight::route('PUT /users', [$users, 'users_put']);
+Flight::route('PUT /edit_user', [$users, 'users_put']);
 
 //DELETE users//
-Flight::route('DELETE /users', [$users, 'delete_users']);
+Flight::route('DELETE /delete_user', [$users, 'delete_users']);
 
 //JWT auth//
 Flight::route('POST /auth', [$users, 'JWT_auth']);
@@ -37,110 +37,104 @@ Flight::route('POST /auth', [$users, 'JWT_auth']);
 Flight::route('POST /admin', [$users, 'JWT_admin_auth']);
 
 //getToken users//
-Flight::route('POST /users', [$users, 'getToken']);
+//Flight::route('POST /getToken', [$users, 'getToken']);
 
 //validateToken users//
-Flight::route('POST /users', [$users, 'validateToken']);
+//Flight::route('POST /validateToken', [$users, 'validateToken']);
 
 //////////////////////////////
 
 
 //get all products from database//
-Flight::route('GET /products', [$products, 'selectall_products']);
+Flight::route('GET /all_products', [$products, 'selectall_products']);
 
 //get a single product from database//
-Flight::route('GET /products/@id', [$products, 'selectone_product']);
+Flight::route('GET /one_product/@id', [$products, 'selectone_product']);
 
 //POST products//
-Flight::route('POST /products', [$products, 'products_post']);
+Flight::route('POST /insert_product', [$products, 'products_post']);
 
 //PUT products//
-Flight::route('PUT /products', [$products, 'products_put']);
+Flight::route('PUT /edit_product', [$products, 'products_put']);
 
 //DELETE products//
-Flight::route('DELETE /products', [$products, 'delete_products']);
+Flight::route('DELETE /delete_product', [$products, 'delete_products']);
 
 
 //////////////////////////////
 
 
 //get all roles from database//
-Flight::route('GET /roles', [$roles, 'selectall_roles']);
+Flight::route('GET /all_roles', [$roles, 'selectall_roles']);
 
-//get a single rol from database//
-Flight::route('GET /roles/@id', [$roles, 'selectone_rol']);
+//get a single role from database//
+Flight::route('GET /one_role/@id', [$roles, 'selectone_rol']);
 
-//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 //POST roles//
-// Flight::route('POST /roles', [$roles, 'roles_post']);
-//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+Flight::route('POST /insert_role', [$roles, 'roles_post']);
 
-//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 //PUT roles//
-// Flight::route('PUT /roles', [$roles, 'roles_put']);
-//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+Flight::route('PUT /edit_role', [$roles, 'roles_put']);
 
-//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
 //DELETE roles//
-// Flight::route('DELETE /roles', [$roles, 'delete_roles']);
-//////////Está comentado porque no es necesario insertar nuevos roles, por el momento//////////
+Flight::route('DELETE /delete_role', [$roles, 'delete_roles']);
 
 
 //////////////////////////////
 
 
 //get all orders from database//
-Flight::route('GET /orders', [$orders, 'selectall_orders']);
+Flight::route('GET /all_orders', [$orders, 'selectall_orders']);
 
 //get a single order from database//
-Flight::route('GET /orders/@id', [$orders, 'selectone_order']);
+Flight::route('GET /one_order/@id', [$orders, 'selectone_order']);
 
 //POST orders//
-Flight::route('POST /orders', [$orders, 'order_post']);
+Flight::route('POST /insert_order', [$orders, 'order_post']);
 
 //PUT orders//
-Flight::route('PUT /orders', [$orders, 'orders_put']);
+Flight::route('PUT /edit_order', [$orders, 'orders_put']);
 
 //DELETE order//
-Flight::route('DELETE /orders', [$orders, 'delete_orders']);
+Flight::route('DELETE /delete_order', [$orders, 'delete_orders']);
 
 
 //////////////////////////////
 
 
-//get all orders_detail from database//
-Flight::route('GET /order_detail', [$order_detail, 'selectall_order_detail']);
+//get all orders_details from database//
+Flight::route('GET /all_order_details', [$order_detail, 'selectall_order_detail']);
 
 //get a single order_detail from database//
-Flight::route('GET /order_detail/@id', [$order_detail, 'selectone_order_detail']);
+Flight::route('GET /one_order_detail/@id', [$order_detail, 'selectone_order_detail']);
 
-//POST order_detail//
-Flight::route('POST /order_detail', [$order_detail, 'order_detail_post']);
+//POST order_details//
+Flight::route('POST /insert_order_detail', [$order_detail, 'order_detail_post']);
 
-//PUT order_detail//
-Flight::route('PUT /order_detail', [$order_detail, 'order_detail_put']);
+//PUT order_details//
+Flight::route('PUT /edit_order_detail', [$order_detail, 'order_detail_put']);
 
-//DELETE order_detail//
-Flight::route('DELETE /order_detail', [$order_detail, 'delete_order_detail']);
+//DELETE order_details//
+Flight::route('DELETE /delete_order_detail', [$order_detail, 'delete_order_detail']);
 
 
 //////////////////////////////
 
 
 //get all categories from database//
-Flight::route('GET /categories', [$categories, 'selectall_categories']);
+Flight::route('GET /all_categories', [$categories, 'selectall_categories']);
 
 //get a single categorie from database//
-Flight::route('GET /categories/@id', [$categories, 'selectone_categorie']);
+Flight::route('GET /one_categorie/@id', [$categories, 'selectone_categorie']);
 
 //POST categories//
-Flight::route('POST /categories', [$categories, 'categories_post']);
+Flight::route('POST /insert_categorie', [$categories, 'categories_post']);
 
 //PUT categories//
-Flight::route('PUT /categories', [$categories, 'categories_put']);
+Flight::route('PUT /edit_categorie', [$categories, 'categories_put']);
 
 //DELETE categories//
-Flight::route('DELETE /categories', [$categories, 'delete_categories']);
+Flight::route('DELETE /delete_categorie', [$categories, 'delete_categories']);
 
 Flight::start();
 ?>

@@ -59,7 +59,7 @@ class orders{
     //Función select all orders//
     function selectall_orders()
     {
-        ////////////JOIN de user_id de la tabla ORDERS con  el campo username de la tabla USERS//////////////
+        ////////////JOIN de user_id de la tabla ORDERS con el campo username de la tabla USERS//////////////
         $query = $this->db->prepare("SELECT 
         u.username AS 'username',
         o.id AS 'id',
@@ -131,7 +131,7 @@ class orders{
                 "status" => 'error'
             ]));
         }
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -140,7 +140,7 @@ class orders{
         $total_amount = $data->total_amount;
         $order_status = $data->order_status;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
     
         $query = $db->prepare("INSERT INTO orders (user_id, total_amount, order_status, creation_date) 
         VALUES (:user_id, :total_amount, :order_status, :creation_date)");
@@ -178,7 +178,7 @@ class orders{
                 "status" => 'error'
             ]));
         }
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -188,7 +188,7 @@ class orders{
         $total_amount = $data->total_amount;
         $order_status = $data->order_status;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//;
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
         
         $query = $db->prepare("UPDATE orders SET user_id = :user_id, total_amount = :total_amount, order_status = :order_status,
          creation_date = :creation_date WHERE id = :id ");

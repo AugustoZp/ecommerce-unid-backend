@@ -69,7 +69,7 @@ class users
         {
             $array[] = [
                 'id' => $row['id'],
-                'name' => $row['name'],
+               'name' => $row['name'],
                 'last_name' => $row['last_name'],
                 'username' => $row['username'],
                 'email' => $row['email'],
@@ -84,7 +84,7 @@ class users
         }
         Flight::json([
             "total_rows"=> $query->rowcount(),
-            "rows" => $array,
+            "rows" => $array
         ]);
     }
 
@@ -117,7 +117,7 @@ class users
     //Función insert user//
     function users_post()
     {
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         
@@ -131,7 +131,7 @@ class users
         $phone_number = $data->phone_number;
         $birth_date = $data->birth_date; //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
 
         $query = $db->prepare("INSERT INTO users (name, last_name, username, email, address, password, phone_number, birth_date, creation_date) 
         VALUES (:name, :last_name, :username, :email, :address, :password, :phone_number, :birth_date, :creation_date)");
@@ -175,7 +175,7 @@ class users
                 "status" => 'error'
             ]));
         }
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+       //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -191,7 +191,7 @@ class users
         $phone_number = $data->phone_number;
         $birth_date = $data->birth_date; //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR//
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
 
         //ESTA ES NUESTRA EDICIÓN // NO ELIMINAR //
         //$db = flight::db();
@@ -276,14 +276,14 @@ class users
     function JWT_auth()
     {
 
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+       //INICIA REESTRUCTURACIÓN//
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = flight::db();
 
         $email = $data->email;
         $password = $data->password;
-        //AQUI FINALIZA LA EDICIÓN DEL PROFESOR// 
+        //AQUI FINALIZA LA REESTRUCTURACIÓN// 
 
         $query = $db->prepare("SELECT * FROM users where email = :email and password = :password");
         $array = [
@@ -316,7 +316,7 @@ class users
         function JWT_admin_auth()
         {
         
-        //ESTA ES LA EDICIÓN DEL PROFESOR//
+        //INICIA REESTRUCTURACIÓN//
             $body = Flight::request()->getBody();
             $data = json_decode($body);
             $db = flight::db();
@@ -324,7 +324,7 @@ class users
             $email = $data->email;
             $password = $data->password;
             $role_id = 1;
-
+        //AQUI FINALIZA LA REESTRUCTURACIÓN//
     // Proporcionar los datos necesarios
     if (!$email || !$password) {
         $error = [
