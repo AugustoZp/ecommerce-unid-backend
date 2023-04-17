@@ -50,7 +50,7 @@ class orders{
     {
      $info = $this->getToken();
      $db= Flight::db();
-     $query = $db->prepare("SELECT * FROM orders where id = :id");            
+     $query = $db->prepare("SELECT * FROM users where id = :id");            
      $query->execute([":id"=>$info->data]);
      $rows = $query->fetchColumn();
      return $rows;
@@ -131,7 +131,7 @@ class orders{
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -140,7 +140,7 @@ class orders{
         $total_amount = $data->total_amount;
         $order_status = $data->order_status;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
     
         $query = $db->prepare("INSERT INTO orders (user_id, total_amount, order_status, creation_date) 
         VALUES (:user_id, :total_amount, :order_status, :creation_date)");
@@ -178,7 +178,7 @@ class orders{
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -188,7 +188,7 @@ class orders{
         $total_amount = $data->total_amount;
         $order_status = $data->order_status;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
         
         $query = $db->prepare("UPDATE orders SET user_id = :user_id, total_amount = :total_amount, order_status = :order_status,
          creation_date = :creation_date WHERE id = :id ");

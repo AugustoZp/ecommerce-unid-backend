@@ -139,7 +139,7 @@ class order_detail
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -150,7 +150,7 @@ class order_detail
         $quantity = $data->quantity;
         $price = $data->price;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
         
         $query = $db->prepare("INSERT INTO order_detail (order_id, product_id, image, quantity, price, creation_date) 
         VALUES (:order_id, :product_id, :image, :quantity, :price,  :creation_date)");
@@ -191,7 +191,7 @@ class order_detail
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = flight::db();
@@ -203,7 +203,7 @@ class order_detail
         $quantity = $data->quantity;
         $price = $data->price;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
 
         
         $query = $db->prepare("UPDATE order_detail SET order_id = :order_id, product_id = :product_id, image = :image,

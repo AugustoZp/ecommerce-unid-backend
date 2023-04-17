@@ -36,10 +36,10 @@ Flight::route('POST /auth', [$users, 'JWT_auth']);
 //JWT admin auth//
 Flight::route('POST /admin', [$users, 'JWT_admin_auth']);
 
-//getToken users//
+//getToken users// No se utiliza
 //Flight::route('POST /getToken', [$users, 'getToken']);
 
-//validateToken users//
+//validateToken users// No se utiliza
 //Flight::route('POST /validateToken', [$users, 'validateToken']);
 
 //////////////////////////////

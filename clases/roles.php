@@ -50,7 +50,7 @@ class roles
     {
         $info = $this->getToken();
         $db= Flight::db();
-        $query = $db->prepare("SELECT * FROM roles where id = :id");            
+        $query = $db->prepare("SELECT * FROM users where id = :id");            
         $query->execute([":id"=>$info->data]);
         $rows = $query->fetchColumn();
     return $rows;
@@ -106,13 +106,13 @@ class roles
             "status" => 'error'
         ]));
     }
-    //INICIA REESTRUCTURACIÓN//
+    
     $body = Flight::request()->getBody();
     $data = json_decode($body);
     $db = Flight::db();
     $name = $data->name;
     $creation_date = $data->creation_date;
-    //AQUI FINALIZA LA REESTRUCTURACIÓN//
+    
     
     $query = $db->prepare("INSERT INTO roles (name, creation_date) VALUES (:name, :creation_date)");
     
@@ -144,7 +144,7 @@ class roles
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
          $body = Flight::request()->getBody();
          $data = json_decode($body);
          $db = Flight::db();
@@ -152,7 +152,7 @@ class roles
          $id = $data->id;
          $name = $data->name;
          $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
 
          $query = $db->prepare("UPDATE roles SET name = :name, creation_date = :creation_date WHERE id = :id ");
            
