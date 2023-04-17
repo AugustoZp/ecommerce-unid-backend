@@ -117,7 +117,7 @@ class users
     //Función insert user//
     function users_post()
     {
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         
@@ -131,7 +131,7 @@ class users
         $phone_number = $data->phone_number;
         $birth_date = $data->birth_date; //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
 
         $query = $db->prepare("INSERT INTO users (name, last_name, username, email, address, password, phone_number, birth_date, creation_date) 
         VALUES (:name, :last_name, :username, :email, :address, :password, :phone_number, :birth_date, :creation_date)");
@@ -175,7 +175,7 @@ class users
                 "status" => 'error'
             ]));
         }
-       //INICIA REESTRUCTURACIÓN//
+       
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -191,21 +191,7 @@ class users
         $phone_number = $data->phone_number;
         $birth_date = $data->birth_date; //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
-
-        //ESTA ES NUESTRA EDICIÓN // NO ELIMINAR //
-        //$db = flight::db();
-        //$id = flight::request()->data->id;
-        //$name = flight::request()->data->name;
-        //$last_name = flight::request()->data->last_name;
-        //$username = flight::request()->data->username;
-        //$email = flight::request()->data->email;
-        //$address = flight::request()->data->address;
-        //$password = flight::request()->data->password;
-        //$role_id = flight::request()->data->role_id;
-        //$phone_number = flight::request()->data->phone_number;
-        //$birth_date = flight::request()->data->birth_date;    //////////Formato de insercion de cumpleaños es yyyy-mm-dd//////////
-        //AQUI FINALIZA NUESTRA EDICIÓN//
+        
         
         $query = $db->prepare("UPDATE users SET name = :name, last_name = :last_name, username = :username, email = :email, address = :address,
         password = :password, role_id = :role_id, phone_number = :phone_number, birth_date = :birth_date, creation_date = :creation_date WHERE id = :id ");
@@ -276,14 +262,14 @@ class users
     function JWT_auth()
     {
 
-       //INICIA REESTRUCTURACIÓN//
+       
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = flight::db();
 
         $email = $data->email;
         $password = $data->password;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN// 
+         
 
         $query = $db->prepare("SELECT * FROM users where email = :email and password = :password");
         $array = [
@@ -316,7 +302,7 @@ class users
         function JWT_admin_auth()
         {
         
-        //INICIA REESTRUCTURACIÓN//
+        
             $body = Flight::request()->getBody();
             $data = json_decode($body);
             $db = flight::db();
@@ -324,7 +310,7 @@ class users
             $email = $data->email;
             $password = $data->password;
             $role_id = 1;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
     // Proporcionar los datos necesarios
     if (!$email || !$password) {
         $error = [

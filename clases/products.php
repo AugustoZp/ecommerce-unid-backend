@@ -120,7 +120,7 @@ class products
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -133,7 +133,7 @@ class products
         $description = $data->description;
         $image = $data->image;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
     
         $query = $db->prepare("INSERT INTO products (category_id, product_name, price, stock, short_desc, description, image, creation_date) 
         VALUES (:category_id, :product_name, :price, :stock, :short_desc, :description, :image, :creation_date)");
@@ -175,7 +175,7 @@ class products
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -189,7 +189,7 @@ class products
         $description = $data->description;
         $image = $data->image;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
 
     
         $query = $db->prepare("UPDATE products SET category_id = :category_id, product_name = :product_name, price = :price, stock = :stock, short_desc = :short_desc,

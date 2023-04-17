@@ -50,7 +50,7 @@ class categories
     {
         $info = $this->getToken();
         $db= Flight::db();
-        $query = $db->prepare("SELECT * FROM categories where id = :id");            
+        $query = $db->prepare("SELECT * FROM users where id = :id");            
         $query->execute([":id"=>$info->data]);
         $rows = $query->fetchColumn();
         return $rows;
@@ -108,7 +108,7 @@ class categories
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -116,7 +116,7 @@ class categories
         $name = $data->name;
         $image = $data->image;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
     
         $query = $db->prepare("INSERT INTO categories (name, image, creation_date) VALUES (:name, :image, :creation_date)");
     
@@ -152,7 +152,7 @@ class categories
                 "status" => 'error'
             ]));
         }
-        //INICIA REESTRUCTURACIÓN//
+        
         $body = Flight::request()->getBody();
         $data = json_decode($body);
         $db = Flight::db();
@@ -161,7 +161,7 @@ class categories
         $name = $data->name;
         $image = $data->image;
         $creation_date = $data->creation_date;
-        //AQUI FINALIZA LA REESTRUCTURACIÓN//
+        
 
         $query = $db->prepare("UPDATE categories SET name = :name, image = :image, creation_date = :creation_date WHERE id = :id ");
        
